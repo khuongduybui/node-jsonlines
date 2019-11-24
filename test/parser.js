@@ -112,4 +112,20 @@ describe('Parser', function () {
 
     parser.end(data)
   })
+
+  it('should accept custom jsonParser', function (done) {
+    var parser = jsonlines.parse({
+      jsonParser: function (line) {
+        assert.equal(line, 'true')
+        return true
+      }
+    })
+
+    parser.once('data', function (data) {
+      assert.equal(data, true)
+      done()
+    })
+
+    parser.end('true')
+  })
 })

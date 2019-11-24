@@ -60,4 +60,20 @@ describe('Stringifier', function () {
 
     stringifier.end(broken)
   })
+
+  it('should accept custom jsonParser', function (done) {
+    var stringifier = jsonlines.stringify({
+      jsonStringifier: function (line) {
+        assert.equal(line, true)
+        return 'true'
+      }
+    })
+
+    stringifier.once('data', function (data) {
+      assert.equal(data, 'true\n')
+      done()
+    })
+
+    stringifier.end(true)
+  })
 })
